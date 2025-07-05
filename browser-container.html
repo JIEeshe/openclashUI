@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷雨传媒网络配置管理工具</title>
+    <style>
+        /* 🎨 iOS风格圆弧效果样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        /* 主容器 */
+        .browser-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 自定义标题栏 */
+        .custom-title-bar {
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            -webkit-app-region: drag;
+            z-index: 1000;
+        }
+
+        .title-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .title-icon {
+            width: 20px;
+            height: 20px;
+            color: white;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            -webkit-app-region: no-drag;
+        }
+
+        .control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn.close { background: #ff5f57; }
+        .control-btn.minimize { background: #ffbd2e; }
+        .control-btn.maximize { background: #28ca42; }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 网站容器 */
+        .website-container {
+            flex: 1;
+            position: relative;
+            margin: 16px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.25),
+                0 12px 25px rgba(0, 0, 0, 0.15),
+                0 6px 12px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 网站iframe */
+        .website-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 24px;
+            background: white;
+        }
+
+        /* 加载状态 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            z-index: 100;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 错误状态 */
+        .error-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            z-index: 100;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .error-icon {
+            width: 60px;
+            height: 60px;
+            color: #ff5f57;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .error-message {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .website-container {
+                margin: 8px;
+                border-radius: 16px;
+            }
+            
+            .website-frame {
+                border-radius: 16px;
+            }
+        }
+
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            .loading-overlay, .error-overlay {
+                background: rgba(30, 30, 30, 0.95);
+            }
+            
+            .loading-text {
+                color: #8a9cff;
+            }
+            
+            .error-title {
+                color: #fff;
+            }
+            
+            .error-message {
+                color: #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="browser-container">
+        <!-- 自定义标题栏 -->
+        <div class="custom-title-bar">
+            <div class="title-content">
+                <svg class="title-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                雷雨传媒网络配置管理工具
+            </div>
+            <div class="window-controls">
+                <button class="control-btn close" id="closeBtn"></button>
+                <button class="control-btn minimize" id="minimizeBtn"></button>
+                <button class="control-btn maximize" id="maximizeBtn"></button>
+            </div>
+        </div>
+
+        <!-- 网站容器 -->
+        <div class="website-container">
+            <!-- 加载状态 -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">正在加载网站...</div>
+            </div>
+
+            <!-- 错误状态 -->
+            <div class="error-overlay" id="errorOverlay">
+                <svg class="error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+                <div class="error-title">网站加载失败</div>
+                <div class="error-message">无法连接到目标网站，请检查网络连接或稍后重试</div>
+                <button class="retry-btn" onclick="retryLoad()">重新加载</button>
+            </div>
+
+            <!-- 网站iframe -->
+            <iframe class="website-frame" id="websiteFrame" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        
+        // 窗口控制
+        document.getElementById('closeBtn').addEventListener('click', () => {
+            ipcRenderer.send('window-control', 'close');
+        });
+
+        document.getElementById('minimizeBtn').addEventListener('click', () => {
+            ipcRenderer.send('window-control', 'minimize');
+        });
+
+        document.getElementById('maximizeBtn').addEventListener('click', () => {
+            ipcRenderer.send('window-control', 'maximize');
+        });
+
+        // 网站加载管理
+        const websiteFrame = document.getElementById('websiteFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorOverlay = document.getElementById('errorOverlay');
+
+        // 加载目标网站
+        function loadWebsite(url) {
+            console.log('🌐 开始加载网站:', url);
+            
+            // 显示加载状态
+            loadingOverlay.style.display = 'flex';
+            errorOverlay.style.display = 'none';
+            
+            // 设置iframe源
+            websiteFrame.src = url;
+            
+            // 设置加载超时
+            const loadTimeout = setTimeout(() => {
+                console.log('⏰ 网站加载超时');
+                showError();
+            }, 15000); // 15秒超时
+
+            // 监听iframe加载事件
+            websiteFrame.onload = function() {
+                clearTimeout(loadTimeout);
+                console.log('✅ 网站加载成功');
+                hideLoading();
+            };
+
+            websiteFrame.onerror = function() {
+                clearTimeout(loadTimeout);
+                console.log('❌ 网站加载失败');
+                showError();
+            };
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        // 显示错误状态
+        function showError() {
+            loadingOverlay.style.display = 'none';
+            errorOverlay.style.display = 'flex';
+        }
+
+        // 重新加载
+        function retryLoad() {
+            ipcRenderer.send('retry-load-website');
+        }
+
+        // 监听来自主进程的消息
+        ipcRenderer.on('load-website', (event, url) => {
+            loadWebsite(url);
+        });
+
+        ipcRenderer.on('show-error', (event, message) => {
+            document.querySelector('.error-message').textContent = message;
+            showError();
+        });
+
+        // 页面加载完成后通知主进程
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎨 浏览器容器页面加载完成');
+            ipcRenderer.send('browser-container-ready');
+        });
+    </script>
+</body>
+</html>

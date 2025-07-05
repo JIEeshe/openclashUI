@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷雨传媒网络配置管理工具</title>
+    <link rel="stylesheet" href="components/title-bar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-app-region: no-drag;
+        }
+
+        .window-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .content-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo svg {
+            width: 60px;
+            height: 60px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .status h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #4ade80;
+        }
+
+        .status p {
+            font-size: 16px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn.primary {
+            background: rgba(76, 175, 80, 0.8);
+            border-color: rgba(76, 175, 80, 1);
+        }
+
+        .btn.primary:hover {
+            background: rgba(76, 175, 80, 1);
+        }
+
+        .network-status {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="window-container">
+        <div class="title-bar theme-gradient">
+            <div class="title-bar-title">
+                <svg class="title-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                雷雨传媒网络配置管理工具
+            </div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button minimize-btn" id="minimizeBtn"></button>
+                <button class="title-bar-button close-btn" id="closeBtn"></button>
+            </div>
+        </div>
+        <div class="content-area">
+            <div class="container">
+        <div class="logo">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        
+        <h1>雷雨传媒配置管理工具</h1>
+        <p class="subtitle">网络配置管理桌面版</p>
+        
+        <div class="status">
+            <h2>✅ 授权验证成功</h2>
+            <p>您的软件授权已通过验证，可以正常使用所有功能。</p>
+            <div class="license-info" id="licenseInfo" style="margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>授权剩余时间：</span>
+                    <span id="remainingDays" style="font-weight: bold; color: #4CAF50;">--</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                    <span>授权到期日期：</span>
+                    <span id="expireDate" style="font-size: 0.9em; color: #E0E0E0;">--</span>
+                </div>
+            </div>
+            <div class="network-status" id="networkStatus">
+                <span class="loading"></span>正在连接到管理服务器...
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn primary" onclick="retryConnection()">重新连接</button>
+            <button class="btn" onclick="openSettings()">网络设置</button>
+            <button class="btn" onclick="contactSupport()">技术支持</button>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        function updateNetworkStatus(status, message) {
+            const networkStatus = document.getElementById('networkStatus');
+            networkStatus.innerHTML = `${status} ${message}`;
+        }
+        
+        function retryConnection() {
+            if (retryCount < maxRetries) {
+                retryCount++;
+                updateNetworkStatus('🔄', `正在尝试重新连接... (${retryCount}/${maxRetries})`);
+
+                // 禁用重试按钮防止重复点击
+                const retryBtn = document.querySelector('.btn.primary');
+                if (retryBtn) {
+                    retryBtn.disabled = true;
+                    retryBtn.textContent = `重试中... (${retryCount}/${maxRetries})`;
+                }
+
+                // 使用递增的延迟时间
+                const delay = 2000 + (retryCount - 1) * 1000; // 2秒、3秒、4秒
+                setTimeout(() => {
+                    console.log(`🔄 第${retryCount}次重试连接`);
+                    // 尝试重新加载原始网站
+                    ipcRenderer.send('retry-main-site');
+
+                    // 重新启用按钮
+                    if (retryBtn) {
+                        retryBtn.disabled = false;
+                        retryBtn.textContent = '重新连接';
+                    }
+                }, delay);
+            } else {
+                updateNetworkStatus('❌', '连接失败，请检查网络设置或联系技术支持');
+
+                // 重置重试计数，允许用户再次尝试
+                setTimeout(() => {
+                    retryCount = 0;
+                    updateNetworkStatus('⚠️', '可以再次尝试重新连接');
+                }, 5000);
+            }
+        }
+        
+        function openSettings() {
+            ipcRenderer.send('open-network-settings');
+        }
+        
+        function contactSupport() {
+            ipcRenderer.send('contact-support');
+        }
+        
+        // 页面加载完成后获取授权信息并开始尝试连接
+        window.addEventListener('load', () => {
+            // 获取授权信息
+            loadLicenseInfo();
+
+            setTimeout(() => {
+                retryConnection();
+            }, 2000);
+        });
+
+        // 获取并显示授权信息
+        async function loadLicenseInfo() {
+            try {
+                const licenseStatus = await ipcRenderer.invoke('get-license-status');
+                if (licenseStatus && licenseStatus.valid) {
+                    displayLicenseInfo(licenseStatus);
+                }
+            } catch (error) {
+                console.log('获取授权信息失败:', error);
+            }
+        }
+
+        // 显示授权信息
+        function displayLicenseInfo(licenseInfo) {
+            console.log('🎨 显示授权信息:', licenseInfo);
+
+            const licenseInfoDiv = document.getElementById('licenseInfo');
+            const remainingDaysSpan = document.getElementById('remainingDays');
+            const expireDateSpan = document.getElementById('expireDate');
+
+            // 显示剩余时间
+            if (licenseInfo.isMinuteLicense && licenseInfo.remainingMinutes !== undefined) {
+                // 分钟级授权码显示剩余分钟数
+                remainingDaysSpan.textContent = `${licenseInfo.remainingMinutes} 分钟`;
+
+                // 根据剩余分钟数设置颜色
+                if (licenseInfo.remainingMinutes > 30) {
+                    remainingDaysSpan.style.color = '#4CAF50'; // 绿色
+                } else if (licenseInfo.remainingMinutes > 5) {
+                    remainingDaysSpan.style.color = '#FF9800'; // 橙色
+                } else {
+                    remainingDaysSpan.style.color = '#F44336'; // 红色
+                }
+            } else if (licenseInfo.remainingDays !== undefined) {
+                // 天级授权码显示剩余天数
+                remainingDaysSpan.textContent = `${licenseInfo.remainingDays} 天`;
+
+                // 根据剩余天数设置颜色
+                if (licenseInfo.remainingDays > 30) {
+                    remainingDaysSpan.style.color = '#4CAF50'; // 绿色
+                } else if (licenseInfo.remainingDays > 7) {
+                    remainingDaysSpan.style.color = '#FF9800'; // 橙色
+                } else {
+                    remainingDaysSpan.style.color = '#F44336'; // 红色
+                }
+            }
+
+            // 显示到期时间（兼容多种数据结构）
+            let expireDate = null;
+
+            // 尝试从不同的数据结构中获取过期时间
+            if (licenseInfo.data && (licenseInfo.data.expires || licenseInfo.data.expiresAt)) {
+                // 新的数据结构：licenseInfo.data.expiresAt
+                expireDate = new Date(licenseInfo.data.expires || licenseInfo.data.expiresAt);
+            } else if (licenseInfo.licenseInfo && (licenseInfo.licenseInfo.expires || licenseInfo.licenseInfo.expiresAt)) {
+                // checkLocalLicense 返回的结构：licenseInfo.licenseInfo.expiresAt
+                expireDate = new Date(licenseInfo.licenseInfo.expires || licenseInfo.licenseInfo.expiresAt);
+            } else if (licenseInfo.expiryDate && licenseInfo.expiryDate !== '未知') {
+                // 直接的 expiryDate 字段
+                expireDate = new Date(licenseInfo.expiryDate);
+            } else if (licenseInfo.expires || licenseInfo.expiresAt) {
+                // 直接的 expires/expiresAt 字段
+                expireDate = new Date(licenseInfo.expires || licenseInfo.expiresAt);
+            }
+
+            if (expireDate && !isNaN(expireDate.getTime())) {
+                // 显示完整的日期和时间
+                expireDateSpan.textContent = expireDate.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                console.log('✅ 成功显示过期时间:', expireDateSpan.textContent);
+            } else {
+                console.log('⚠️ 未找到有效的过期时间数据');
+                expireDateSpan.textContent = '--';
+            }
+
+            // 显示授权信息区域
+            licenseInfoDiv.style.display = 'block';
+        }
+        
+        // 监听连接状态更新
+        ipcRenderer.on('connection-status', (event, status, message) => {
+            updateNetworkStatus(status, message);
+        });
+    </script>
+
+    <script>
+        // 窗口控制按钮事件处理
+        document.addEventListener('DOMContentLoaded', () => {
+            const { ipcRenderer } = require('electron');
+
+            const closeBtn = document.getElementById('closeBtn');
+            const minimizeBtn = document.getElementById('minimizeBtn');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    ipcRenderer.send('window-control', 'close');
+                });
+            }
+
+            if (minimizeBtn) {
+                minimizeBtn.addEventListener('click', () => {
+                    ipcRenderer.send('window-control', 'minimize');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

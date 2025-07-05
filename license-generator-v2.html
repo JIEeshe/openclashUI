@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷雨传媒网络配置管理工具 - 卡密管理系统 V2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .license-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .license-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .license-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .license-info {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .copy-btn {
+            padding: 6px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* 表格样式 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* 按钮尺寸 */
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* 状态标签 */
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-used {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-expired {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-disabled {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎫 雷雨传媒卡密管理系统 V2</h1>
+            <p>专业的授权码生成和管理工具</p>
+        </div>
+
+        <!-- 统计信息 -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalGenerated">0</div>
+                <div class="stat-label">已生成卡密</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalBatches">0</div>
+                <div class="stat-label">批次数量</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="serverStatus">🔴</div>
+                <div class="stat-label">服务器状态</div>
+            </div>
+        </div>
+
+        <!-- 生成卡密表单 -->
+        <div class="form-section">
+            <h3>🎯 生成卡密</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div class="form-group">
+                    <label for="licenseLevel">授权级别</label>
+                    <select id="licenseLevel" class="form-control">
+                        <option value="basic">🥉 基础版 (最多10个节点)</option>
+                        <option value="professional" selected>🥈 专业版 (最多100个节点)</option>
+                        <option value="enterprise">🥇 企业版 (无限节点)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="validityDays">有效期 (天)</label>
+                    <select id="validityDays" class="form-control">
+                        <option value="7">7天</option>
+                        <option value="30" selected>30天</option>
+                        <option value="90">90天</option>
+                        <option value="180">180天</option>
+                        <option value="365">365天</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">生成数量</label>
+                    <input type="number" id="quantity" class="form-control" value="10" min="1" max="1000">
+                </div>
+                <div class="form-group">
+                    <label for="batchName">批次名称</label>
+                    <input type="text" id="batchName" class="form-control" placeholder="例如：2025年1月批次">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="generateLicenses()" style="width: 100%; margin-top: 15px;">
+                🎯 生成卡密
+            </button>
+        </div>
+
+        <!-- 功能按钮 -->
+        <div class="button-grid">
+            <button class="btn btn-success" onclick="generateTestLicenses()">🧪 生成测试卡密</button>
+            <button class="btn btn-info" onclick="verifyLicenseCode()">🔍 验证卡密</button>
+            <button class="btn btn-warning" onclick="showUsedLicenses()">📊 查看已使用卡密</button>
+            <button class="btn btn-secondary" onclick="checkLicenseStatus()">🔎 检查卡密状态</button>
+            <button class="btn btn-primary" onclick="uploadToServer()">📤 上传到服务器</button>
+            <button class="btn btn-success" onclick="checkServerStatus()">🌐 服务器状态</button>
+            <button class="btn btn-info" onclick="showServerStats()">📈 服务器统计</button>
+            <button class="btn btn-secondary" onclick="manageServerLicenses()">🗂️ 服务器管理</button>
+            <button class="btn btn-primary" onclick="showLicenseManager()">🛠️ 卡密管理</button>
+            <button class="btn btn-warning" onclick="exportLicenses()">📄 导出卡密</button>
+            <button class="btn btn-danger" onclick="clearLicenses()">🗑️ 清空列表</button>
+        </div>
+
+        <!-- 消息显示区域 -->
+        <div id="messageArea"></div>
+
+        <!-- 卡密列表 -->
+        <div class="license-list">
+            <h3>📋 生成的卡密列表</h3>
+            <div id="licenseList">
+                <p style="text-align: center; color: #6c757d; padding: 20px;">暂无卡密，请先生成卡密</p>
+            </div>
+        </div>
+
+        <!-- 卡密管理模态框 -->
+        <div id="licenseManagerModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 1200px; width: 90%;">
+                <div class="modal-header">
+                    <h2>🛠️ 卡密管理系统</h2>
+                    <span class="close" onclick="closeLicenseManager()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <!-- 搜索和筛选区域 -->
+                    <div class="search-controls" style="margin-bottom: 20px;">
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <input type="text" id="searchInput" placeholder="🔍 搜索卡密或批次名称..."
+                                   style="flex: 1; min-width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <select id="statusFilter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">全部状态</option>
+                                <option value="active">活跃</option>
+                                <option value="used">已使用</option>
+                                <option value="expired">已过期</option>
+                                <option value="disabled">已禁用</option>
+                            </select>
+                            <button onclick="searchServerLicenses()" class="btn btn-primary">🔍 搜索</button>
+                            <button onclick="refreshLicenseList()" class="btn btn-secondary">🔄 刷新</button>
+                        </div>
+                    </div>
+
+                    <!-- 批量操作区域 -->
+                    <div class="batch-controls" style="margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <span>批量操作:</span>
+                            <button onclick="selectAllLicenses()" class="btn btn-sm btn-secondary">全选</button>
+                            <button onclick="deselectAllLicenses()" class="btn btn-sm btn-secondary">取消全选</button>
+                            <button onclick="batchDeleteSelected()" class="btn btn-sm btn-danger">🗑️ 删除选中</button>
+                            <select id="batchStatusSelect" style="padding: 4px;">
+                                <option value="">选择状态</option>
+                                <option value="active">设为活跃</option>
+                                <option value="disabled">设为禁用</option>
+                                <option value="expired">设为过期</option>
+                            </select>
+                            <button onclick="batchUpdateStatus()" class="btn btn-sm btn-warning">🔄 批量更新状态</button>
+                        </div>
+                    </div>
+
+                    <!-- 卡密列表 -->
+                    <div class="server-license-list" style="max-height: 500px; overflow-y: auto;">
+                        <table id="serverLicenseTable" style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #f8f9fa; position: sticky; top: 0;">
+                                <tr>
+                                    <th style="padding: 10px; border: 1px solid #ddd; width: 40px;">
+                                        <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                                    </th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">卡密</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">状态</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">批次</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">有效期</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">创建时间</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="serverLicenseTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px; color: #6c757d;">
+                                        🔍 点击搜索按钮加载卡密列表
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控制 -->
+                    <div class="pagination-controls" style="margin-top: 20px; text-align: center;">
+                        <button onclick="previousPage()" class="btn btn-sm btn-secondary" id="prevPageBtn" disabled>上一页</button>
+                        <span id="pageInfo" style="margin: 0 15px;">第 1 页</span>
+                        <button onclick="nextPage()" class="btn btn-sm btn-secondary" id="nextPageBtn" disabled>下一页</button>
+                        <span style="margin-left: 20px;">每页显示:</span>
+                        <select id="pageSizeSelect" onchange="changePageSize()" style="margin-left: 5px; padding: 4px;">
+                            <option value="20">20</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡密编辑模态框 -->
+        <div id="editLicenseModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px; width: 90%;">
+                <div class="modal-header">
+                    <h2>✏️ 编辑卡密</h2>
+                    <span class="close" onclick="closeEditModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label><strong>卡密代码:</strong></label>
+                        <div id="editLicenseCode" style="font-family: monospace; font-size: 14px; padding: 8px; background: #f8f9fa; border-radius: 4px; margin-top: 5px;"></div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="editStatusSelect"><strong>状态:</strong></label>
+                        <select id="editStatusSelect" class="form-control" style="margin-top: 5px;">
+                            <option value="active">🟢 活跃</option>
+                            <option value="used">🔴 已使用</option>
+                            <option value="expired">🟡 已过期</option>
+                            <option value="disabled">⚫ 已禁用</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label><strong>当前信息:</strong></label>
+                        <div id="editLicenseInfo" style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 5px; font-size: 12px;"></div>
+                    </div>
+
+                    <div style="text-align: right; margin-top: 30px;">
+                        <button onclick="closeEditModal()" class="btn btn-secondary" style="margin-right: 10px;">取消</button>
+                        <button onclick="saveEditedLicense()" class="btn btn-primary">💾 保存更改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let generatedLicenses = [];
+        let ipcRenderer = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // 尝试获取 Electron 的 ipcRenderer
+                if (typeof require !== 'undefined') {
+                    const { ipcRenderer: electronIpcRenderer } = require('electron');
+                    ipcRenderer = electronIpcRenderer;
+                    console.log('✅ Electron 环境检测成功');
+                } else {
+                    console.log('⚠️ 非 Electron 环境，使用模拟模式');
+                }
+            } catch (error) {
+                console.log('⚠️ 无法加载 Electron 模块，使用模拟模式');
+            }
+
+            // 初始化批次名称
+            const now = new Date();
+            const defaultBatchName = `${now.getFullYear()}年${now.getMonth() + 1}月批次`;
+            document.getElementById('batchName').value = defaultBatchName;
+
+            // 更新统计信息
+            updateStats();
+        });
+
+        // 显示消息
+        function showMessage(message, type = 'success') {
+            const messageArea = document.getElementById('messageArea');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            messageArea.appendChild(messageDiv);
+
+            // 3秒后自动移除消息
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 3000);
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('totalGenerated').textContent = generatedLicenses.length;
+
+            const batches = new Set(generatedLicenses.map(license => license.batchId));
+            document.getElementById('totalBatches').textContent = batches.size;
+        }
+
+        // 生成卡密
+        async function generateLicenses() {
+            const licenseLevel = document.getElementById('licenseLevel').value;
+            const validityDays = parseInt(document.getElementById('validityDays').value);
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const batchName = document.getElementById('batchName').value.trim() || '未命名批次';
+
+            if (quantity < 1 || quantity > 1000) {
+                showMessage('❌ 生成数量必须在1-1000之间', 'error');
+                return;
+            }
+
+            try {
+                showMessage('🎯 正在生成卡密...', 'success');
+
+                if (ipcRenderer) {
+                    // Electron 环境
+                    const result = await ipcRenderer.invoke('generate-batch-licenses', {
+                        licenseLevel,
+                        validityDays,
+                        quantity,
+                        batchName
+                    });
+
+                    if (result.success) {
+                        generatedLicenses.push(...result.licenses);
+                        showMessage(`✅ 成功生成 ${result.licenses.length} 个卡密`, 'success');
+                        updateLicenseList();
+                        updateStats();
+                    } else {
+                        showMessage(`❌ 生成失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟环境
+                    const mockLicenses = [];
+                    const batchId = Date.now();
+
+                    for (let i = 0; i < quantity; i++) {
+                        const code = generateMockLicenseCode();
+                        mockLicenses.push({
+                            id: `${batchId}-${i + 1}`,
+                            code: code,
+                            licenseLevel: licenseLevel,
+                            validityDays: validityDays,
+                            batchName: batchName,
+                            batchId: batchId,
+                            generatedAt: new Date()
+                        });
+                    }
+
+                    generatedLicenses.push(...mockLicenses);
+                    showMessage(`✅ 模拟生成 ${mockLicenses.length} 个卡密`, 'success');
+                    updateLicenseList();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('生成卡密失败:', error);
+                showMessage(`❌ 生成卡密失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 生成模拟卡密代码
+        function generateMockLicenseCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 20; i++) {
+                if (i > 0 && i % 4 === 0) result += '-';
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // 更新卡密列表显示
+        function updateLicenseList() {
+            const licenseList = document.getElementById('licenseList');
+
+            if (generatedLicenses.length === 0) {
+                licenseList.innerHTML = '<p style="text-align: center; color: #6c757d; padding: 20px;">暂无卡密，请先生成卡密</p>';
+                return;
+            }
+
+            const html = generatedLicenses.map(license => `
+                <div class="license-item">
+                    <div>
+                        <div class="license-code">${license.code}</div>
+                        <div class="license-info">
+                            ${getLevelName(license.licenseLevel)} | ${license.validityDays}天有效期 | ${license.batchName}<br>
+                            生成时间: ${license.generatedAt.toLocaleString()}
+                        </div>
+                    </div>
+                    <button class="copy-btn" onclick="copyLicense('${license.code}')">复制</button>
+                </div>
+            `).join('');
+
+            licenseList.innerHTML = html;
+        }
+
+        // 获取级别名称
+        function getLevelName(level) {
+            const levels = {
+                basic: '🥉 基础版',
+                professional: '🥈 专业版',
+                enterprise: '🥇 企业版'
+            };
+            return levels[level] || '🥈 专业版';
+        }
+
+        // 复制卡密
+        function copyLicense(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showMessage(`✅ 卡密已复制: ${code}`, 'success');
+            }).catch(() => {
+                // 降级方案
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showMessage(`✅ 卡密已复制: ${code}`, 'success');
+            });
+        }
+
+        // 生成测试卡密
+        async function generateTestLicenses() {
+            try {
+                showMessage('🧪 正在生成测试卡密...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('generate-test-licenses');
+                    if (result.success) {
+                        const testLicenses = result.licenses.map(license => ({
+                            id: `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                            code: license.code,
+                            licenseLevel: license.licenseLevel,
+                            validityDays: license.validityDays,
+                            batchName: `测试批次-${license.name}`,
+                            batchId: `test-${Date.now()}`,
+                            generatedAt: new Date()
+                        }));
+
+                        generatedLicenses.push(...testLicenses);
+                        showMessage(`✅ 成功生成 ${testLicenses.length} 个测试卡密`, 'success');
+                        updateLicenseList();
+                        updateStats();
+                    } else {
+                        showMessage(`❌ 生成测试卡密失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟测试卡密
+                    const testConfigs = [
+                        { days: 7, level: 'basic', name: '7天基础版' },
+                        { days: 30, level: 'professional', name: '30天专业版' },
+                        { days: 90, level: 'professional', name: '90天专业版' },
+                        { days: 365, level: 'enterprise', name: '365天企业版' }
+                    ];
+
+                    const testLicenses = testConfigs.map(config => ({
+                        id: `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                        code: generateMockLicenseCode(),
+                        licenseLevel: config.level,
+                        validityDays: config.days,
+                        batchName: `测试批次-${config.name}`,
+                        batchId: `test-${Date.now()}`,
+                        generatedAt: new Date()
+                    }));
+
+                    generatedLicenses.push(...testLicenses);
+                    showMessage(`✅ 模拟生成 ${testLicenses.length} 个测试卡密`, 'success');
+                    updateLicenseList();
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('生成测试卡密失败:', error);
+                showMessage(`❌ 生成测试卡密失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 验证卡密
+        async function verifyLicenseCode() {
+            const licenseCode = prompt('🔍 请输入要验证的卡密:');
+            if (!licenseCode) return;
+
+            try {
+                showMessage('🔍 正在验证卡密...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('verify-license-code', licenseCode.trim());
+                    if (result.success) {
+                        const verification = result.result;
+                        if (verification.valid) {
+                            const message = `✅ 卡密验证成功！\n\n卡密: ${licenseCode}\n状态: ${verification.message}`;
+                            alert(message);
+                            showMessage('✅ 卡密验证成功', 'success');
+                        } else {
+                            const message = `❌ 卡密验证失败！\n\n卡密: ${licenseCode}\n原因: ${verification.message}`;
+                            alert(message);
+                            showMessage('❌ 卡密验证失败', 'error');
+                        }
+                    } else {
+                        showMessage(`❌ 验证失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟验证
+                    const isValid = Math.random() > 0.3; // 70% 概率有效
+                    const message = isValid
+                        ? `✅ 卡密验证成功！\n\n卡密: ${licenseCode}\n状态: 模拟验证通过`
+                        : `❌ 卡密验证失败！\n\n卡密: ${licenseCode}\n原因: 模拟验证失败`;
+                    alert(message);
+                    showMessage(isValid ? '✅ 模拟验证成功' : '❌ 模拟验证失败', isValid ? 'success' : 'error');
+                }
+            } catch (error) {
+                console.error('验证卡密失败:', error);
+                showMessage(`❌ 验证卡密失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 查看已使用卡密
+        async function showUsedLicenses() {
+            try {
+                showMessage('📊 正在获取已使用卡密列表...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('get-used-licenses');
+                    if (result.success) {
+                        const usedLicenses = result.usedLicenses;
+                        if (usedLicenses.length === 0) {
+                            alert('📊 暂无已使用的卡密');
+                        } else {
+                            const message = `📊 已使用卡密列表 (${usedLicenses.length}个)\n\n` +
+                                usedLicenses.slice(0, 10).map(license =>
+                                    `${license.code} - ${license.usedAt ? new Date(license.usedAt).toLocaleString() : '未知时间'}`
+                                ).join('\n') +
+                                (usedLicenses.length > 10 ? `\n\n... 还有 ${usedLicenses.length - 10} 个` : '');
+                            alert(message);
+                        }
+                        showMessage(`✅ 获取到 ${usedLicenses.length} 个已使用卡密`, 'success');
+                    } else {
+                        showMessage(`❌ 获取失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟已使用卡密
+                    const mockUsedCount = Math.floor(Math.random() * 20);
+                    alert(`📊 模拟已使用卡密列表\n\n共 ${mockUsedCount} 个已使用的卡密`);
+                    showMessage(`✅ 模拟获取到 ${mockUsedCount} 个已使用卡密`, 'success');
+                }
+            } catch (error) {
+                console.error('获取已使用卡密失败:', error);
+                showMessage(`❌ 获取已使用卡密失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 检查卡密状态
+        async function checkLicenseStatus() {
+            const licenseCode = prompt('🔎 请输入要检查的卡密:');
+            if (!licenseCode) return;
+
+            try {
+                showMessage('🔎 正在检查卡密状态...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('check-license-status', licenseCode.trim());
+                    if (result.success) {
+                        const { isUsed, verification } = result;
+                        const statusMessage = `🔎 卡密状态检查结果\n\n` +
+                            `卡密: ${licenseCode}\n` +
+                            `状态: ${isUsed ? '已使用' : '未使用'}\n` +
+                            `有效性: ${verification.valid ? '有效' : '无效'}\n` +
+                            `消息: ${verification.message}`;
+                        alert(statusMessage);
+                        showMessage('✅ 卡密状态检查完成', 'success');
+                    } else {
+                        showMessage(`❌ 检查失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟状态检查
+                    const isUsed = Math.random() > 0.5;
+                    const isValid = Math.random() > 0.3;
+                    const statusMessage = `🔎 模拟卡密状态检查\n\n` +
+                        `卡密: ${licenseCode}\n` +
+                        `状态: ${isUsed ? '已使用' : '未使用'}\n` +
+                        `有效性: ${isValid ? '有效' : '无效'}`;
+                    alert(statusMessage);
+                    showMessage('✅ 模拟状态检查完成', 'success');
+                }
+            } catch (error) {
+                console.error('检查卡密状态失败:', error);
+                showMessage(`❌ 检查卡密状态失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 上传到服务器
+        async function uploadToServer() {
+            if (generatedLicenses.length === 0) {
+                showMessage('❌ 没有可上传的卡密，请先生成卡密', 'error');
+                return;
+            }
+
+            try {
+                showMessage('📤 正在上传到服务器...', 'success');
+
+                if (ipcRenderer) {
+                    const uploadData = generatedLicenses.map(license => ({
+                        code: license.code,
+                        licenseLevel: license.licenseLevel,
+                        validityDays: license.validityDays,
+                        batchName: license.batchName,
+                        generatedAt: license.generatedAt,
+                        batchId: license.batchId
+                    }));
+
+                    const result = await ipcRenderer.invoke('upload-batch-licenses', {
+                        licenses: uploadData,
+                        batchName: uploadData[0]?.batchName || '未命名批次'
+                    });
+
+                    if (result.success) {
+                        showMessage(`✅ 成功上传 ${uploadData.length} 个卡密到服务器`, 'success');
+                    } else {
+                        showMessage(`❌ 上传失败: ${result.error}`, 'error');
+                    }
+                } else {
+                    // 模拟上传
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // 模拟延迟
+                    showMessage(`✅ 模拟上传 ${generatedLicenses.length} 个卡密到服务器`, 'success');
+                }
+            } catch (error) {
+                console.error('上传失败:', error);
+                showMessage(`❌ 上传失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 检查服务器状态
+        async function checkServerStatus() {
+            try {
+                showMessage('🔍 正在检查服务器状态...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('check-server-health');
+                    if (result.success) {
+                        const status = result.online ? '🟢 在线' : '🔴 离线';
+                        const message = `🌐 服务器状态检查结果\n\n状态: ${status}\n消息: ${result.message}\n时间: ${new Date().toLocaleString()}`;
+                        alert(message);
+
+                        // 更新状态显示
+                        document.getElementById('serverStatus').textContent = result.online ? '🟢' : '🔴';
+                        showMessage(`✅ 服务器${result.online ? '在线' : '离线'}`, 'success');
+                    } else {
+                        showMessage(`❌ 检查失败: ${result.message}`, 'error');
+                        document.getElementById('serverStatus').textContent = '🔴';
+                    }
+                } else {
+                    // 模拟服务器状态
+                    const isOnline = Math.random() > 0.2; // 80% 概率在线
+                    const status = isOnline ? '🟢 在线' : '🔴 离线';
+                    const message = `🌐 模拟服务器状态\n\n状态: ${status}\n时间: ${new Date().toLocaleString()}`;
+                    alert(message);
+
+                    document.getElementById('serverStatus').textContent = isOnline ? '🟢' : '🔴';
+                    showMessage(`✅ 模拟服务器${isOnline ? '在线' : '离线'}`, 'success');
+                }
+            } catch (error) {
+                console.error('检查服务器状态失败:', error);
+                showMessage(`❌ 检查服务器状态失败: ${error.message}`, 'error');
+                document.getElementById('serverStatus').textContent = '🔴';
+            }
+        }
+
+        // 显示服务器统计
+        async function showServerStats() {
+            try {
+                showMessage('📊 正在获取服务器统计...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('get-server-stats');
+                    if (result.success) {
+                        const stats = result.data;
+                        const message = `📊 服务器统计信息\n\n` +
+                            `总卡密数: ${stats.totalLicenses || 0}\n` +
+                            `已使用: ${stats.usedLicenses || 0}\n` +
+                            `未使用: ${stats.unusedLicenses || 0}\n` +
+                            `今日生成: ${stats.todayGenerated || 0}\n` +
+                            `服务器版本: ${stats.version || '未知'}`;
+                        alert(message);
+                        showMessage('✅ 获取服务器统计成功', 'success');
+                    } else {
+                        showMessage(`❌ 获取失败: ${result.message}`, 'error');
+                    }
+                } else {
+                    // 模拟统计数据
+                    const mockStats = {
+                        totalLicenses: Math.floor(Math.random() * 1000) + 100,
+                        usedLicenses: Math.floor(Math.random() * 200) + 50,
+                        unusedLicenses: Math.floor(Math.random() * 800) + 50,
+                        todayGenerated: Math.floor(Math.random() * 50) + 10
+                    };
+                    const message = `📊 模拟服务器统计\n\n` +
+                        `总卡密数: ${mockStats.totalLicenses}\n` +
+                        `已使用: ${mockStats.usedLicenses}\n` +
+                        `未使用: ${mockStats.unusedLicenses}\n` +
+                        `今日生成: ${mockStats.todayGenerated}`;
+                    alert(message);
+                    showMessage('✅ 模拟统计数据获取成功', 'success');
+                }
+            } catch (error) {
+                console.error('获取服务器统计失败:', error);
+                showMessage(`❌ 获取服务器统计失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 服务器管理
+        async function manageServerLicenses() {
+            try {
+                showMessage('🗂️ 正在获取服务器卡密列表...', 'success');
+
+                if (ipcRenderer) {
+                    const result = await ipcRenderer.invoke('get-server-licenses');
+                    if (result.success) {
+                        const licenses = result.data;
+                        if (licenses.length === 0) {
+                            alert('🗂️ 服务器上暂无卡密');
+                        } else {
+                            const message = `🗂️ 服务器卡密管理 (${licenses.length}个)\n\n` +
+                                licenses.slice(0, 10).map(license =>
+                                    `${license.code} - ${license.status || '未知状态'}`
+                                ).join('\n') +
+                                (licenses.length > 10 ? `\n\n... 还有 ${licenses.length - 10} 个` : '');
+                            alert(message);
+                        }
+                        showMessage(`✅ 获取到 ${licenses.length} 个服务器卡密`, 'success');
+                    } else {
+                        showMessage(`❌ 获取失败: ${result.message}`, 'error');
+                    }
+                } else {
+                    // 模拟服务器管理
+                    const mockCount = Math.floor(Math.random() * 100) + 20;
+                    alert(`🗂️ 模拟服务器卡密管理\n\n服务器上共有 ${mockCount} 个卡密`);
+                    showMessage(`✅ 模拟获取到 ${mockCount} 个服务器卡密`, 'success');
+                }
+            } catch (error) {
+                console.error('服务器管理失败:', error);
+                showMessage(`❌ 服务器管理失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 导出卡密
+        function exportLicenses() {
+            if (generatedLicenses.length === 0) {
+                showMessage('❌ 没有可导出的卡密，请先生成卡密', 'error');
+                return;
+            }
+
+            try {
+                const exportData = generatedLicenses.map(license =>
+                    `${license.code}\t${getLevelName(license.licenseLevel)}\t${license.validityDays}天\t${license.batchName}\t${license.generatedAt.toLocaleString()}`
+                ).join('\n');
+
+                const header = '卡密\t级别\t有效期\t批次\t生成时间\n';
+                const fullData = header + exportData;
+
+                // 创建下载链接
+                const blob = new Blob([fullData], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `卡密列表_${new Date().toISOString().slice(0, 10)}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showMessage(`✅ 成功导出 ${generatedLicenses.length} 个卡密`, 'success');
+            } catch (error) {
+                console.error('导出失败:', error);
+                showMessage(`❌ 导出失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 清空卡密列表
+        function clearLicenses() {
+            if (generatedLicenses.length === 0) {
+                showMessage('❌ 列表已经是空的', 'error');
+                return;
+            }
+
+            if (confirm(`确定要清空所有 ${generatedLicenses.length} 个卡密吗？此操作不可撤销。`)) {
+                generatedLicenses = [];
+                updateLicenseList();
+                updateStats();
+                showMessage('✅ 已清空卡密列表', 'success');
+            }
+        }
+
+        // ===== 卡密管理系统 =====
+        let currentPage = 1;
+        let pageSize = 50;
+        let totalLicenses = 0;
+        let serverLicenses = [];
+        let selectedLicenses = new Set();
+
+        // 显示卡密管理器
+        function showLicenseManager() {
+            document.getElementById('licenseManagerModal').style.display = 'flex';
+            refreshLicenseList();
+        }
+
+        // 关闭卡密管理器
+        function closeLicenseManager() {
+            document.getElementById('licenseManagerModal').style.display = 'none';
+            selectedLicenses.clear();
+        }
+
+        // 刷新卡密列表
+        async function refreshLicenseList() {
+            await searchServerLicenses();
+        }
+
+        // 搜索服务器卡密
+        async function searchServerLicenses() {
+            try {
+                const searchTerm = document.getElementById('searchInput').value;
+                const status = document.getElementById('statusFilter').value;
+
+                showMessage('🔍 正在搜索卡密...', 'info');
+
+                const options = {
+                    limit: pageSize,
+                    offset: (currentPage - 1) * pageSize
+                };
+
+                if (status) options.status = status;
+
+                let result;
+                if (ipcRenderer) {
+                    if (searchTerm) {
+                        result = await ipcRenderer.invoke('search-licenses', {
+                            searchTerm: searchTerm,
+                            options: options
+                        });
+                    } else {
+                        result = await ipcRenderer.invoke('get-server-licenses', options);
+                    }
+                } else {
+                    // 模拟数据
+                    result = {
+                        success: true,
+                        data: generateMockLicenses(pageSize),
+                        total: 150
+                    };
+                }
+
+                if (result.success) {
+                    serverLicenses = result.data || [];
+                    totalLicenses = result.total || serverLicenses.length;
+                    updateLicenseTable();
+                    updatePagination();
+                    showMessage(`✅ 找到 ${totalLicenses} 个卡密`, 'success');
+                } else {
+                    showMessage(`❌ 搜索失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('搜索卡密失败:', error);
+                showMessage(`❌ 搜索失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 生成模拟卡密数据
+        function generateMockLicenses(count) {
+            const licenses = [];
+            const statuses = ['active', 'used', 'expired', 'disabled'];
+            const levels = ['basic', 'professional', 'enterprise'];
+
+            for (let i = 0; i < count; i++) {
+                licenses.push({
+                    license_code: `LY${Date.now()}${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+                    status: statuses[Math.floor(Math.random() * statuses.length)],
+                    level: levels[Math.floor(Math.random() * levels.length)],
+                    batch_name: `测试批次${Math.floor(Math.random() * 10) + 1}`,
+                    valid_until: new Date(Date.now() + Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                    created_at: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                });
+            }
+            return licenses;
+        }
+
+        // 更新卡密表格
+        function updateLicenseTable() {
+            const tbody = document.getElementById('serverLicenseTableBody');
+
+            if (serverLicenses.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 20px; color: #6c757d;">
+                            📭 没有找到卡密
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = serverLicenses.map(license => `
+                <tr>
+                    <td>
+                        <input type="checkbox" value="${license.license_code}"
+                               onchange="toggleLicenseSelection('${license.license_code}')"
+                               ${selectedLicenses.has(license.license_code) ? 'checked' : ''}>
+                    </td>
+                    <td style="font-family: monospace; font-size: 12px;">${license.license_code}</td>
+                    <td>
+                        <span class="status-badge status-${license.status}">
+                            ${getStatusText(license.status)}
+                        </span>
+                    </td>
+                    <td>${license.batch_name || '-'}</td>
+                    <td>${license.valid_until || '-'}</td>
+                    <td>${license.created_at || '-'}</td>
+                    <td>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                            <select onchange="quickUpdateStatus('${license.license_code}', this.value)"
+                                    class="btn btn-sm" style="padding: 2px 4px; font-size: 11px;">
+                                <option value="">快速状态</option>
+                                <option value="active" ${license.status === 'active' ? 'selected' : ''}>活跃</option>
+                                <option value="used" ${license.status === 'used' ? 'selected' : ''}>已使用</option>
+                                <option value="expired" ${license.status === 'expired' ? 'selected' : ''}>已过期</option>
+                                <option value="disabled" ${license.status === 'disabled' ? 'selected' : ''}>已禁用</option>
+                            </select>
+                            <button onclick="openEditModal('${license.license_code}')"
+                                    class="btn btn-sm btn-info" title="详细编辑">✏️</button>
+                            <button onclick="deleteSingleLicense('${license.license_code}')"
+                                    class="btn btn-sm btn-danger" title="删除">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'active': '活跃',
+                'used': '已使用',
+                'expired': '已过期',
+                'disabled': '已禁用'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 切换卡密选择
+        function toggleLicenseSelection(licenseCode) {
+            if (selectedLicenses.has(licenseCode)) {
+                selectedLicenses.delete(licenseCode);
+            } else {
+                selectedLicenses.add(licenseCode);
+            }
+            updateSelectAllCheckbox();
+        }
+
+        // 全选/取消全选
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            if (selectAllCheckbox.checked) {
+                selectAllLicenses();
+            } else {
+                deselectAllLicenses();
+            }
+        }
+
+        // 全选
+        function selectAllLicenses() {
+            serverLicenses.forEach(license => {
+                selectedLicenses.add(license.license_code);
+            });
+            updateLicenseTable();
+            updateSelectAllCheckbox();
+        }
+
+        // 取消全选
+        function deselectAllLicenses() {
+            selectedLicenses.clear();
+            updateLicenseTable();
+            updateSelectAllCheckbox();
+        }
+
+        // 更新全选复选框状态
+        function updateSelectAllCheckbox() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const visibleLicenses = serverLicenses.map(l => l.license_code);
+            const selectedVisible = visibleLicenses.filter(code => selectedLicenses.has(code));
+
+            if (selectedVisible.length === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (selectedVisible.length === visibleLicenses.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            }
+        }
+
+        // 删除单个卡密
+        async function deleteSingleLicense(licenseCode) {
+            if (!confirm(`确定要删除卡密 ${licenseCode} 吗？此操作不可撤销。`)) {
+                return;
+            }
+
+            try {
+                showMessage('🗑️ 正在删除卡密...', 'info');
+
+                let result;
+                if (ipcRenderer) {
+                    result = await ipcRenderer.invoke('delete-license', licenseCode);
+                } else {
+                    // 模拟删除
+                    result = { success: true, message: '模拟删除成功' };
+                }
+
+                if (result.success) {
+                    showMessage(`✅ 卡密删除成功`, 'success');
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 删除失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('删除卡密失败:', error);
+                showMessage(`❌ 删除失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 批量删除选中的卡密
+        async function batchDeleteSelected() {
+            if (selectedLicenses.size === 0) {
+                showMessage('❌ 请先选择要删除的卡密', 'error');
+                return;
+            }
+
+            if (!confirm(`确定要删除选中的 ${selectedLicenses.size} 个卡密吗？此操作不可撤销。`)) {
+                return;
+            }
+
+            try {
+                showMessage(`🗑️ 正在批量删除 ${selectedLicenses.size} 个卡密...`, 'info');
+
+                const licenseCodes = Array.from(selectedLicenses);
+
+                let result;
+                if (ipcRenderer) {
+                    result = await ipcRenderer.invoke('delete-batch-licenses', licenseCodes);
+                } else {
+                    // 模拟批量删除
+                    result = {
+                        success: true,
+                        message: `模拟删除了 ${licenseCodes.length} 个卡密`,
+                        data: { deletedCount: licenseCodes.length }
+                    };
+                }
+
+                if (result.success) {
+                    showMessage(`✅ 成功删除 ${result.data?.deletedCount || licenseCodes.length} 个卡密`, 'success');
+                    selectedLicenses.clear();
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 批量删除失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('批量删除失败:', error);
+                showMessage(`❌ 批量删除失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 快速更新卡密状态（通过下拉选择）
+        async function quickUpdateStatus(licenseCode, newStatus) {
+            if (!newStatus) {
+                return; // 用户选择了"编辑状态"选项
+            }
+
+            // 获取当前状态
+            const currentLicense = serverLicenses.find(l => l.license_code === licenseCode);
+            const currentStatus = currentLicense ? currentLicense.status : '';
+
+            if (newStatus === currentStatus) {
+                return; // 状态没有改变
+            }
+
+            try {
+                showMessage('🔄 正在更新卡密状态...', 'info');
+
+                let result;
+                if (ipcRenderer) {
+                    result = await ipcRenderer.invoke('update-license-status', {
+                        licenseCode: licenseCode,
+                        status: newStatus
+                    });
+                } else {
+                    // 模拟更新
+                    result = { success: true, message: '模拟更新成功' };
+                }
+
+                if (result.success) {
+                    showMessage(`✅ 卡密 ${licenseCode} 状态已更新为 ${getStatusText(newStatus)}`, 'success');
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 状态更新失败: ${result.message}`, 'error');
+                    // 恢复原状态
+                    await refreshLicenseList();
+                }
+            } catch (error) {
+                console.error('状态更新失败:', error);
+                showMessage(`❌ 状态更新失败: ${error.message}`, 'error');
+                // 恢复原状态
+                await refreshLicenseList();
+            }
+        }
+
+        // 编辑卡密状态（保留原函数作为备用）
+        async function editLicenseStatus(licenseCode, currentStatus) {
+            const statusOptions = [
+                { value: 'active', text: '活跃' },
+                { value: 'used', text: '已使用' },
+                { value: 'expired', text: '已过期' },
+                { value: 'disabled', text: '已禁用' }
+            ];
+
+            let optionsText = statusOptions.map((opt, index) =>
+                `${index + 1}. ${opt.text} (${opt.value})`
+            ).join('\n');
+
+            const choice = prompt(
+                `请选择新状态:\n${optionsText}\n\n请输入数字 (1-4) 或直接输入状态值:`,
+                currentStatus
+            );
+
+            if (!choice) return;
+
+            let newStatus;
+            if (/^[1-4]$/.test(choice)) {
+                newStatus = statusOptions[parseInt(choice) - 1].value;
+            } else {
+                newStatus = choice.toLowerCase();
+            }
+
+            const validStatuses = ['active', 'used', 'expired', 'disabled'];
+            if (!validStatuses.includes(newStatus)) {
+                showMessage('❌ 无效的状态值', 'error');
+                return;
+            }
+
+            if (newStatus === currentStatus) {
+                return;
+            }
+
+            try {
+                showMessage('🔄 正在更新卡密状态...', 'info');
+
+                let result;
+                if (ipcRenderer) {
+                    result = await ipcRenderer.invoke('update-license-status', {
+                        licenseCode: licenseCode,
+                        status: newStatus
+                    });
+                } else {
+                    // 模拟更新
+                    result = { success: true, message: '模拟更新成功' };
+                }
+
+                if (result.success) {
+                    showMessage(`✅ 状态更新成功`, 'success');
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 状态更新失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('状态更新失败:', error);
+                showMessage(`❌ 状态更新失败: ${error.message}`, 'error');
+            }
+        }
+
+        // ===== 编辑模态框功能 =====
+        let currentEditingLicense = null;
+
+        // 打开编辑模态框
+        function openEditModal(licenseCode) {
+            const license = serverLicenses.find(l => l.license_code === licenseCode);
+            if (!license) {
+                showMessage('❌ 找不到指定的卡密', 'error');
+                return;
+            }
+
+            currentEditingLicense = license;
+
+            // 填充编辑表单
+            document.getElementById('editLicenseCode').textContent = license.license_code;
+            document.getElementById('editStatusSelect').value = license.status;
+
+            // 显示当前信息
+            const infoHtml = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div><strong>当前状态:</strong> <span class="status-badge status-${license.status}">${getStatusText(license.status)}</span></div>
+                    <div><strong>授权级别:</strong> ${license.level || '-'}</div>
+                    <div><strong>批次名称:</strong> ${license.batch_name || '-'}</div>
+                    <div><strong>有效期至:</strong> ${license.valid_until || '-'}</div>
+                    <div><strong>创建时间:</strong> ${license.created_at || '-'}</div>
+                    <div><strong>更新时间:</strong> ${license.updated_at || '-'}</div>
+                </div>
+            `;
+            document.getElementById('editLicenseInfo').innerHTML = infoHtml;
+
+            // 显示模态框
+            document.getElementById('editLicenseModal').style.display = 'flex';
+        }
+
+        // 关闭编辑模态框
+        function closeEditModal() {
+            document.getElementById('editLicenseModal').style.display = 'none';
+            currentEditingLicense = null;
+        }
+
+        // 保存编辑的卡密
+        async function saveEditedLicense() {
+            if (!currentEditingLicense) {
+                showMessage('❌ 没有正在编辑的卡密', 'error');
+                return;
+            }
+
+            const newStatus = document.getElementById('editStatusSelect').value;
+            const licenseCode = currentEditingLicense.license_code;
+            const oldStatus = currentEditingLicense.status;
+
+            if (newStatus === oldStatus) {
+                showMessage('ℹ️ 状态没有改变', 'info');
+                closeEditModal();
+                return;
+            }
+
+            try {
+                showMessage('💾 正在保存更改...', 'info');
+
+                let result;
+                if (ipcRenderer) {
+                    result = await ipcRenderer.invoke('update-license-status', {
+                        licenseCode: licenseCode,
+                        status: newStatus
+                    });
+                } else {
+                    // 模拟更新
+                    result = {
+                        success: true,
+                        message: '模拟更新成功',
+                        data: {
+                            oldStatus: oldStatus,
+                            newStatus: newStatus,
+                            license: { ...currentEditingLicense, status: newStatus }
+                        }
+                    };
+                }
+
+                if (result.success) {
+                    showMessage(`✅ 卡密 ${licenseCode} 状态已从 ${getStatusText(oldStatus)} 更新为 ${getStatusText(newStatus)}`, 'success');
+                    closeEditModal();
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 保存失败: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('保存编辑失败:', error);
+                showMessage(`❌ 保存失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 批量更新状态
+        async function batchUpdateStatus() {
+            if (selectedLicenses.size === 0) {
+                showMessage('❌ 请先选择要更新的卡密', 'error');
+                return;
+            }
+
+            const newStatus = document.getElementById('batchStatusSelect').value;
+            if (!newStatus) {
+                showMessage('❌ 请选择要更新的状态', 'error');
+                return;
+            }
+
+            if (!confirm(`确定要将选中的 ${selectedLicenses.size} 个卡密状态更新为 ${getStatusText(newStatus)} 吗？`)) {
+                return;
+            }
+
+            try {
+                showMessage(`🔄 正在批量更新 ${selectedLicenses.size} 个卡密状态...`, 'info');
+
+                const licenseCodes = Array.from(selectedLicenses);
+                let successCount = 0;
+                let failCount = 0;
+
+                for (const licenseCode of licenseCodes) {
+                    try {
+                        let result;
+                        if (ipcRenderer) {
+                            result = await ipcRenderer.invoke('update-license-status', {
+                                licenseCode: licenseCode,
+                                status: newStatus
+                            });
+                        } else {
+                            // 模拟更新
+                            result = { success: true };
+                        }
+
+                        if (result.success) {
+                            successCount++;
+                        } else {
+                            failCount++;
+                        }
+                    } catch (error) {
+                        failCount++;
+                    }
+                }
+
+                if (successCount > 0) {
+                    showMessage(`✅ 成功更新 ${successCount} 个卡密状态${failCount > 0 ? `，失败 ${failCount} 个` : ''}`, 'success');
+                    selectedLicenses.clear();
+                    await refreshLicenseList();
+                } else {
+                    showMessage(`❌ 批量更新失败`, 'error');
+                }
+            } catch (error) {
+                console.error('批量更新失败:', error);
+                showMessage(`❌ 批量更新失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 分页控制
+        function updatePagination() {
+            const totalPages = Math.ceil(totalLicenses / pageSize);
+            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页，共 ${totalPages} 页 (总计 ${totalLicenses} 个)`;
+
+            document.getElementById('prevPageBtn').disabled = currentPage <= 1;
+            document.getElementById('nextPageBtn').disabled = currentPage >= totalPages;
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                searchServerLicenses();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(totalLicenses / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                searchServerLicenses();
+            }
+        }
+
+        function changePageSize() {
+            pageSize = parseInt(document.getElementById('pageSizeSelect').value);
+            currentPage = 1;
+            searchServerLicenses();
+        }
+
+        // 键盘快捷键支持
+        document.addEventListener('keydown', function(event) {
+            // 编辑模态框快捷键
+            if (document.getElementById('editLicenseModal').style.display === 'flex') {
+                if (event.key === 'Escape') {
+                    closeEditModal();
+                } else if (event.ctrlKey && event.key === 's') {
+                    event.preventDefault();
+                    saveEditedLicense();
+                }
+            }
+            // 管理模态框快捷键
+            else if (document.getElementById('licenseManagerModal').style.display === 'flex') {
+                if (event.key === 'Escape') {
+                    closeLicenseManager();
+                } else if (event.key === 'F5' || (event.ctrlKey && event.key === 'r')) {
+                    event.preventDefault();
+                    refreshLicenseList();
+                } else if (event.ctrlKey && event.key === 'a') {
+                    event.preventDefault();
+                    selectAllLicenses();
+                } else if (event.key === 'Delete' && selectedLicenses.size > 0) {
+                    batchDeleteSelected();
+                } else if (event.ctrlKey && event.key === 'f') {
+                    event.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

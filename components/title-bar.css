@@ -1,0 +1,292 @@
+/* 通用自定义标题栏样式 */
+
+/* 注入页面的标题栏样式 - 只影响标题栏，不影响网站内容 */
+.custom-title-bar-injected {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+    z-index: 999999 !important;
+}
+
+.window-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+        0 32px 64px rgba(0, 0, 0, 0.3),
+        0 16px 32px rgba(0, 0, 0, 0.2),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title-bar {
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    -webkit-app-region: drag;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.title-bar-title {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+.title-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.8;
+}
+
+.title-bar-controls {
+    display: flex;
+    gap: 8px;
+    -webkit-app-region: no-drag;
+}
+
+.title-bar-button {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 1px 2px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.close-btn {
+    background: #ff5f57;
+}
+
+.minimize-btn {
+    background: #ffbd2e;
+}
+
+.maximize-btn {
+    background: #28ca42;
+}
+
+.close-btn:hover {
+    background: #ff3b30;
+    transform: scale(1.15);
+    box-shadow:
+        0 4px 8px rgba(255, 59, 48, 0.3),
+        0 2px 4px rgba(255, 59, 48, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.minimize-btn:hover {
+    background: #ff9500;
+    transform: scale(1.15);
+    box-shadow:
+        0 4px 8px rgba(255, 149, 0, 0.3),
+        0 2px 4px rgba(255, 149, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.maximize-btn:hover {
+    background: #20a934;
+    transform: scale(1.15);
+    box-shadow:
+        0 4px 8px rgba(32, 169, 52, 0.3),
+        0 2px 4px rgba(32, 169, 52, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 按钮图标 */
+.title-bar-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.title-bar-button:hover::before {
+    opacity: 1;
+}
+
+.close-btn:hover::before {
+    content: '×';
+    color: #4a0e0e;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.minimize-btn:hover::before {
+    content: '−';
+    color: #4a3c0e;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.maximize-btn:hover::before {
+    content: '+';
+    color: #0e4a1a;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.content-area {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 不同主题的标题栏背景 */
+.title-bar.theme-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.title-bar.theme-dark {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.title-bar.theme-light {
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.title-bar.theme-light .title-bar-title {
+    color: #333;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .title-bar-title {
+        font-size: 12px;
+    }
+    
+    .title-icon {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .title-bar-button {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* 动画效果 */
+@keyframes titleBarSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.title-bar {
+    animation: titleBarSlideIn 0.3s ease-out;
+}
+
+/* 焦点状态 */
+.window-container.focused .title-bar {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.window-container.unfocused .title-bar {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.window-container.unfocused .title-bar-title {
+    opacity: 0.6;
+}
+
+.window-container.unfocused .title-bar-button {
+    opacity: 0.6;
+}
+
+/* 缩放控制按钮样式 */
+.zoom-btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-app-region: no-drag;
+}
+
+.zoom-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.zoom-btn svg {
+    width: 10px;
+    height: 10px;
+}
+
+.zoom-level {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 35px;
+    text-align: center;
+    opacity: 0.9;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+}
+
+/* 移动端缩放按钮调整 */
+@media (max-width: 768px) {
+    .zoom-btn {
+        width: 12px;
+        height: 12px;
+    }
+
+    .zoom-btn svg {
+        width: 8px;
+        height: 8px;
+    }
+
+    .zoom-level {
+        font-size: 10px;
+        min-width: 30px;
+    }
+}

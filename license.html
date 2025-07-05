@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雷雨传媒网络配置管理工具 - 授权验证</title>
+    <link rel="stylesheet" href="components/title-bar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-app-region: no-drag;
+        }
+
+        .window-container {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease-in-out infinite, windowAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+                0 32px 64px rgba(0, 0, 0, 0.3),
+                0 16px 32px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes windowAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        /* 标题栏样式现在由 components/title-bar.css 提供 */
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            overflow: visible;
+            min-height: 0;
+        }
+
+        .license-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            border-radius: 28px;
+            padding: 40px 35px;
+            box-shadow:
+                0 32px 64px rgba(0, 0, 0, 0.18),
+                0 16px 32px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(255, 255, 255, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 440px;
+            width: 95%;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .license-container:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.22),
+                0 20px 40px rgba(0, 0, 0, 0.15),
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+        }
+
+        .license-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .logo {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 28px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 20px 40px rgba(102, 126, 234, 0.4),
+                0 10px 20px rgba(102, 126, 234, 0.3),
+                0 5px 10px rgba(102, 126, 234, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: logoFloat 3s ease-in-out infinite, logoGlow 4s ease-in-out infinite;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 300% 300%;
+            border-radius: 32px;
+            z-index: -1;
+            opacity: 0.7;
+            filter: blur(12px);
+            animation: logoGlowRotate 6s linear infinite;
+        }
+
+        @keyframes logoGlowRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .logo svg {
+            width: 44px;
+            height: 44px;
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                box-shadow:
+                    0 20px 40px rgba(102, 126, 234, 0.4),
+                    0 10px 20px rgba(102, 126, 234, 0.3),
+                    0 5px 10px rgba(102, 126, 234, 0.2);
+            }
+            50% {
+                transform: translateY(-6px) scale(1.02);
+                box-shadow:
+                    0 25px 50px rgba(102, 126, 234, 0.5),
+                    0 15px 30px rgba(102, 126, 234, 0.4),
+                    0 8px 16px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.1) saturate(1.2); }
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .license-input {
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            letter-spacing: 1.5px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(250, 251, 252, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.06),
+                0 1px 4px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .license-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow:
+                0 0 0 4px rgba(102, 126, 234, 0.15),
+                0 8px 24px rgba(102, 126, 234, 0.2),
+                0 4px 12px rgba(102, 126, 234, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .license-input.error {
+            border-color: #e53e3e;
+            background: #fef5f5;
+            box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.12);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 18px 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 8px 24px rgba(102, 126, 234, 0.35),
+                0 4px 12px rgba(102, 126, 234, 0.25),
+                0 2px 6px rgba(102, 126, 234, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .verify-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 12px 32px rgba(102, 126, 234, 0.45),
+                0 6px 16px rgba(102, 126, 234, 0.35),
+                0 3px 8px rgba(102, 126, 234, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #7c8df0, #8a5cb8);
+        }
+
+        .verify-btn:hover::before {
+            left: 100%;
+        }
+
+        .verify-btn:active {
+            transform: translateY(-1px) scale(1.01);
+            box-shadow:
+                0 6px 16px rgba(102, 126, 234, 0.4),
+                0 3px 8px rgba(102, 126, 234, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            font-size: 14px;
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 500;
+            animation: slideInMessage 0.3s ease-out;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideInMessage {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .help-text {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .license-status {
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .status-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .status-text {
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .days-remaining {
+            color: #3182ce;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .contact-admin {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-admin:hover {
+            text-decoration: underline;
+        }
+
+        .format-hint {
+            color: #a0aec0;
+            font-size: 12px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* 网络状态指示器 */
+        .network-status {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .network-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .network-status.online .network-indicator {
+            background: #48bb78;
+        }
+
+        .network-status.offline .network-indicator {
+            background: #f56565;
+        }
+
+        .network-status.checking .network-indicator {
+            background: #ed8936;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+
+        /* 成功动画效果 */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(72, 187, 120, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: successFadeIn 0.5s ease-out;
+        }
+
+        .success-content {
+            text-align: center;
+            color: white;
+            animation: successBounce 0.6s ease-out;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: successIconSpin 0.8s ease-out;
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        @keyframes successFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes successBounce {
+            0% { transform: scale(0.3) translateY(50px); opacity: 0; }
+            50% { transform: scale(1.1) translateY(-10px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @keyframes successIconSpin {
+            0% { transform: rotate(-180deg) scale(0); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        /* 验证进度条 */
+        .verification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 0 0 24px 24px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 2s ease-in-out;
+        }
+
+        .verification-progress.active {
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="window-container">
+        <div class="title-bar theme-gradient">
+            <div class="title-bar-title">
+                <svg class="title-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                雷雨传媒网络配置管理工具 - 授权验证
+            </div>
+            <div class="title-bar-controls">
+                <button class="title-bar-button minimize-btn" id="minimizeBtn"></button>
+                <button class="title-bar-button close-btn" id="closeBtn"></button>
+            </div>
+        </div>
+
+        <!-- 网络状态指示器 -->
+        <div class="network-status" id="networkStatus">
+            <div class="network-indicator"></div>
+            <span id="networkText">检查网络...</span>
+        </div>
+
+        <div class="content-area">
+            <div class="license-container">
+                <!-- 验证进度条 -->
+                <div class="verification-progress" id="verificationProgress"></div>
+
+                <div class="logo">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+
+                <h1>软件授权验证</h1>
+                <p class="subtitle">请输入有效的授权码以继续使用</p>
+
+        <div class="license-status" id="licenseStatus" style="display: none;">
+            <div class="status-info">
+                <span class="status-text" id="statusText"></span>
+                <span class="days-remaining" id="daysRemaining"></span>
+            </div>
+        </div>
+        
+        <form id="licenseForm">
+            <div class="form-group">
+                <label for="licenseCode">授权码</label>
+                <input 
+                    type="text" 
+                    id="licenseCode" 
+                    class="license-input" 
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    maxlength="19"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                <div class="format-hint">格式：4组4位字符，用短横线分隔</div>
+            </div>
+            
+            <button type="submit" class="verify-btn" id="verifyBtn">
+                <span class="btn-text">验证授权码</span>
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>验证中...</span>
+                </div>
+            </button>
+            
+            <div class="error-message" id="errorMessage"></div>
+        </form>
+        
+                <div class="help-text">
+                    如果您没有授权码或遇到问题，请<a href="#" class="contact-admin" id="contactAdmin">联系管理员</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功动画覆盖层 -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-content">
+            <div class="success-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 style="font-size: 24px; margin-bottom: 8px;">授权验证成功！</h2>
+            <p style="font-size: 16px; opacity: 0.9;">正在启动应用程序...</p>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        const licenseForm = document.getElementById('licenseForm');
+        const licenseInput = document.getElementById('licenseCode');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const btnText = document.querySelector('.btn-text');
+        const loading = document.querySelector('.loading');
+        const errorMessage = document.getElementById('errorMessage');
+        const contactAdmin = document.getElementById('contactAdmin');
+        const licenseStatus = document.getElementById('licenseStatus');
+        const statusText = document.getElementById('statusText');
+        const daysRemaining = document.getElementById('daysRemaining');
+        const closeBtn = document.getElementById('closeBtn');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const networkStatus = document.getElementById('networkStatus');
+        const networkText = document.getElementById('networkText');
+        const successOverlay = document.getElementById('successOverlay');
+        const verificationProgress = document.getElementById('verificationProgress');
+
+        // 窗口控制按钮事件
+        closeBtn.addEventListener('click', () => {
+            ipcRenderer.send('close-license-window');
+        });
+
+        minimizeBtn.addEventListener('click', () => {
+            ipcRenderer.send('minimize-license-window');
+        });
+
+        // 网络状态检测 - 优化版本
+        async function checkNetworkStatus() {
+            try {
+                networkStatus.className = 'network-status checking';
+                networkText.textContent = '检查网络...';
+
+                // 检查在线状态，增加超时处理
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('网络检查超时')), 5000);
+                });
+
+                const statusPromise = ipcRenderer.invoke('check-online-status');
+                const result = await Promise.race([statusPromise, timeoutPromise]);
+
+                console.log('🔍 网络状态检查结果:', result);
+
+                if (result && result.online) {
+                    networkStatus.className = 'network-status online';
+                    networkText.textContent = '在线验证';
+                    console.log('✅ 网络连接正常');
+                } else {
+                    networkStatus.className = 'network-status offline';
+                    networkText.textContent = result?.message || '网络连接异常';
+                    console.log('❌ 网络连接异常:', result?.message);
+                }
+            } catch (error) {
+                console.error('❌ 网络状态检查失败:', error.message);
+                networkStatus.className = 'network-status offline';
+                networkText.textContent = '网络检查失败';
+            }
+        }
+
+        // 页面加载时检查现有授权状态
+        window.addEventListener('DOMContentLoaded', async () => {
+            // 检查网络状态
+            await checkNetworkStatus();
+
+            try {
+                const result = await ipcRenderer.invoke('get-license-status');
+                if (result && result.valid) {
+                    showLicenseStatus(result);
+                    // 显示之前使用过的授权码
+                    if (result.data && result.data.licenseCode) {
+                        licenseInput.value = result.data.licenseCode;
+                    }
+                }
+            } catch (error) {
+                console.log('检查授权状态时出错:', error);
+            }
+        });
+
+        // 显示授权状态
+        function showLicenseStatus(licenseInfo) {
+            if (licenseInfo.valid) {
+                statusText.textContent = '当前授权状态：有效';
+
+                // 根据授权类型显示不同的剩余时间
+                if (licenseInfo.isMinuteLicense && licenseInfo.remainingMinutes !== undefined) {
+                    daysRemaining.textContent = `剩余 ${licenseInfo.remainingMinutes} 分钟`;
+                } else {
+                    daysRemaining.textContent = `剩余 ${licenseInfo.remainingDays} 天`;
+                }
+
+                licenseStatus.style.display = 'block';
+            }
+        }
+
+        // 格式化输入
+        licenseInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            let formatted = value.match(/.{1,4}/g)?.join('-') || value;
+            if (formatted.length > 19) {
+                formatted = formatted.substring(0, 19);
+            }
+            e.target.value = formatted;
+            
+            // 清除错误状态
+            licenseInput.classList.remove('error');
+            errorMessage.classList.remove('show');
+        });
+
+        // 表单提交 - 优化版本
+        licenseForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const licenseCode = licenseInput.value.trim();
+
+            if (!licenseCode || licenseCode.length < 19) {
+                showError('请输入完整的授权码');
+                return;
+            }
+
+            setLoading(true);
+
+            // 添加验证超时处理
+            const verifyWithTimeout = async () => {
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('验证超时，请检查网络连接')), 30000); // 30秒超时
+                });
+
+                const verifyPromise = ipcRenderer.invoke('verify-license', licenseCode);
+                return Promise.race([verifyPromise, timeoutPromise]);
+            };
+
+            try {
+                console.log('🔍 前端开始验证授权码:', licenseCode);
+
+                // 先检查网络状态
+                await checkNetworkStatus();
+
+                const result = await verifyWithTimeout();
+                console.log('📊 前端收到验证结果:', result);
+
+                if (result.success) {
+                    console.log('✅ 前端验证成功，准备启动应用');
+                    // 显示成功消息
+                    showSuccess('授权验证成功！正在启动应用...');
+
+                    // 延迟2秒后通知主进程，让用户看到成功消息
+                    setTimeout(() => {
+                        console.log('🚀 前端发送license-verified信号');
+                        ipcRenderer.send('license-verified');
+                    }, 2000);
+
+                    // 成功时不立即取消加载状态，让用户看到"正在启动应用"的状态
+                    return;
+                } else {
+                    console.log('❌ 前端验证失败:', result.message);
+
+                    // 根据错误类型提供不同的提示
+                    let errorMessage = result.message || '授权码无效';
+                    if (result.message && result.message.includes('网络')) {
+                        errorMessage += '\n\n💡 建议：\n• 检查网络连接\n• 稍后重试\n• 联系技术支持';
+                    } else if (result.message && result.message.includes('超时')) {
+                        errorMessage += '\n\n💡 建议：\n• 网络较慢，请稍后重试\n• 检查防火墙设置';
+                    }
+
+                    showError(errorMessage);
+                }
+            } catch (error) {
+                console.error('❌ 前端验证过程中发生错误:', error);
+
+                let errorMessage = '验证过程中发生错误';
+                if (error.message.includes('超时')) {
+                    errorMessage = '验证超时，请检查网络连接后重试';
+                } else if (error.message.includes('网络')) {
+                    errorMessage = '网络连接失败，请检查网络设置';
+                } else {
+                    errorMessage = `验证失败: ${error.message}`;
+                }
+
+                showError(errorMessage);
+            }
+
+            setLoading(false);
+        });
+
+        // 联系管理员
+        contactAdmin.addEventListener('click', function(e) {
+            e.preventDefault();
+            ipcRenderer.send('contact-admin');
+        });
+
+        function setLoading(isLoading) {
+            verifyBtn.disabled = isLoading;
+            if (isLoading) {
+                btnText.style.display = 'none';
+                loading.classList.add('show');
+                verificationProgress.classList.add('active');
+            } else {
+                btnText.style.display = 'block';
+                loading.classList.remove('show');
+                verificationProgress.classList.remove('active');
+            }
+        }
+
+        function showError(message) {
+            licenseInput.classList.add('error');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            errorMessage.style.color = '#e53e3e';
+            errorMessage.style.background = '#fef5f5';
+            errorMessage.style.border = '1px solid #fed7d7';
+        }
+
+        function showSuccess(message) {
+            licenseInput.classList.remove('error');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            errorMessage.style.color = '#38a169';
+            errorMessage.style.background = '#f0fff4';
+            errorMessage.style.border = '1px solid #9ae6b4';
+
+            // 显示成功动画覆盖层
+            setTimeout(() => {
+                successOverlay.style.display = 'flex';
+            }, 500);
+        }
+
+        // 定期检查网络状态
+        setInterval(checkNetworkStatus, 30000); // 每30秒检查一次
+
+        // 监听授权验证结果
+        ipcRenderer.on('license-error', (event, message) => {
+            showError(message);
+            setLoading(false);
+        });
+
+        // 页面加载完成后聚焦输入框
+        window.addEventListener('load', () => {
+            licenseInput.focus();
+        });
+    </script>
+</body>
+</html>

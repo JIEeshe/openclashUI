@@ -1,0 +1,60 @@
+# 依赖文件
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 构建产物
+dist/
+build/
+packages/
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+*.zip
+*.tar.gz
+
+# 开发和测试文件
+test-*.js
+test-*.html
+*-test.js
+*-test.html
+permission-test.*
+debug.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# IDE 文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 运行时文件
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# 授权和配置文件（敏感信息）
+used-licenses.json
+license-info.json
+config-local.json
+
+# 临时文件
+temp/
+tmp/
+.cache/
+
+# 环境变量文件
+.env
+.env.local
+.env.development
+.env.test
+.env.production

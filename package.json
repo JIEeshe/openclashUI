@@ -1,0 +1,114 @@
+{
+  "name": "leiyuchuanmei-config-manager",
+  "version": "1.0.0",
+  "description": "雷雨传媒配置管理桌面版",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "license-generator": "electron license-generator-main.js",
+    "license-generator-v2": "electron license-generator-v2-main.js",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-mac": "electron-builder --mac",
+    "build-linux": "electron-builder --linux",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "openclash",
+    "proxy",
+    "config",
+    "manager"
+  ],
+  "author": "雷雨传媒",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "axios": "^1.10.0",
+    "crypto-js": "^4.2.0",
+    "electron-updater": "^6.1.7",
+    "jsonwebtoken": "^9.0.2",
+    "react-spring": "^10.0.1",
+    "recharts": "^3.0.2",
+    "uuid": "^11.1.0"
+  },
+  "build": {
+    "appId": "com.leiyuchuanmei.openclash-manager",
+    "productName": "雷雨传媒配置管理",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "splash.html",
+      "license.html",
+      "license-manager.js",
+      "license-generator-main.js",
+      "license-generator.html",
+      "ui-config.js",
+      "fallback.html",
+      "favicon.ico",
+      "favicon-256x256.png",
+      "components/**/*",
+      "assets/**/*",
+      "*.css",
+      "*.js",
+      "*.html",
+      "!node_modules",
+      "!dist",
+      "!build",
+      "!*.md"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "雷雨传媒配置管理"
+    }
+  }
+}

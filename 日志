@@ -1,0 +1,183 @@
+Microsoft Windows [版本 10.0.19045.6036]
+(c) Microsoft Corporation。保留所有权利。
+
+C:\Users\77066\OneDrive\Desktop\electron-app>npm start
+
+> leiyuchuanmei-config-manager@1.0.0 start
+> electron .
+
+
+馃搵 寮€濮嬪姞杞介厤缃拰妯″潡...
+鉁?UI閰嶇疆鍔犺浇鎴愬姛
+馃搳 鍦ㄧ嚎楠岃瘉鏃ュ織璁板綍鍣ㄥ垵濮嬪寲瀹屾垚
+馃搧 鏃ュ織鐩綍: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\logs\online-verification
+馃搫 褰撳墠鏃ュ織鏂囦欢: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\logs\online-verification\verification-2025-07-05.log
+鉁?鎺堟潈绠＄悊鍣ㄦā鍧楀姞杞芥垚鍔?鉁?鏉冮檺绠＄悊鍣ㄦā鍧楀姞杞芥垚鍔?馃寪 缃戠珯URL: http://openclash.aixiaobaozi.dpdns.org/
+馃敡 鍒濆鍖栨巿鏉冩枃浠?..
+馃搧 鐢ㄦ埛鏁版嵁鐩綍: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager
+馃搫 鎺堟潈鏂囦欢璺緞: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃搫 浣跨敤璁板綍鏂囦欢璺緞: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\used-licenses.json
+馃摑 宸插垱寤烘巿鏉冪爜浣跨敤璁板綍鏂囦欢: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\used-licenses.json
+鉁?鎺堟潈绠＄悊鍣ㄥ垵濮嬪寲鎴愬姛
+鉁?鏉冮檺绠＄悊鍣ㄥ垵濮嬪寲鎴愬姛
+馃攳 妫€鏌ユ湰鍦版巿鏉冪姸鎬?..
+馃搵 姝ｅ湪璇诲彇鏈湴鎺堟潈淇℃伅: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃摑 鏈湴鎺堟潈鏂囦欢涓嶅瓨鍦?鉂?鏈湴鏈壘鍒版巿鏉冧俊鎭?鉂?闇€瑕佹巿鏉冮獙璇? 鏈壘鍒版巿鏉冧俊鎭紝璇疯繘琛屾巿鏉冮獙璇?馃攳 妫€鏌ユ湰
+鍦版巿鏉冪姸鎬?..
+馃搵 姝ｅ湪璇诲彇鏈湴鎺堟潈淇℃伅: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃摑 鏈湴鎺堟潈鏂囦欢涓嶅瓨鍦?鉂?鏈湴鏈壘鍒版巿鏉冧俊鎭?馃攳 涓昏繘绋嬪紑濮嬮獙璇佹巿鏉冪爜: SYXO-HK0U-PQ6P-71F8
+馃攳 寮€濮嬬函鍦ㄧ嚎楠岃瘉鎺堟潈鐮? SYXO-HK0U-PQ6P-71F8    
+馃敡 鍦ㄧ嚎鍗″瘑绠＄悊鍣ㄥ垵濮嬪寲瀹屾垚
+馃摗 鏈嶅姟鍣ㄥ湴鍧€: http://localhost:3001/api
+馃攳 瀹㈡埛绔寚绾? 12fede7c7abf3860...
+馃攳 寮€濮嬬函鍦ㄧ嚎楠岃瘉鍗″瘑: SYXO-HK0U-PQ6P-71F8       
+馃搳 [VERIFICATION_START] 寮€濮嬪湪绾块獙璇?{
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  clientFingerprint: '12fede7c7abf3860...',
+  timestamp: '2025-07-05T17:03:22.598Z'
+}
+馃寪 鍙戦€丟ET璇锋眰鍒?/health (灏濊瘯 1/3, 瓒呮椂: 8000ms)
+馃摗 鏀跺埌鍝嶅簲 (0ms): 鐘舵€佺爜 200
+馃攳 鍋ュ悍妫€鏌ュ搷搴旇皟璇?
+   response.success: true
+   response.statusCode: 200
+   response.data: {
+  "success": true,
+  "message": "闆烽洦浼犲獟鍗″瘑楠岃瘉鏈嶅姟鍣ㄨ繍琛屾甯?,
+  "timestamp": "2025-07-05T17:03:22.604Z",
+  "version": "1.0.0"
+}
+馃攧 楠岃瘉灏濊瘯 1/3
+馃寪 鍙戦€丳OST璇锋眰鍒?/verify-license (灏濊瘯 1/3, 瓒呮椂: 8000ms)
+馃摗 鏀跺埌鍝嶅簲 (1ms): 鐘舵€佺爜 200
+馃搳 [SERVER_RESPONSE] 鏈嶅姟鍣ㄥ搷搴?- /verify-license {
+  success: true,
+  response: {
+    success: true,
+    statusCode: 200,
+    data: { success: true, message: '鍗″瘑楠岃瘉鎴愬姛锛堥噸澶嶉獙璇侊級', data: [Object] },
+    responseTime: 1
+  },
+  timestamp: '2025-07-05T17:03:22.636Z'
+}
+鉁?鍦ㄧ嚎楠岃瘉鎴愬姛
+馃搳 [VERIFICATION_SUCCESS] 鍦ㄧ嚎楠岃瘉鎴愬姛 {
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  data: {
+    licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+    validityDays: 30,
+    expiresAt: '2025-08-04T16:00:58.646Z',
+    isUsed: true,
+    usedAt: '2025-07-05 16:01:06'
+  },
+  timestamp: '2025-07-05T17:03:22.637Z'
+}
+鉁?鍦ㄧ嚎楠岃瘉鎴愬姛
+馃搳 涓昏繘绋嬫敹鍒伴獙璇佺粨鏋? {
+  "valid": true,
+  "message": "鍗″瘑楠岃瘉鎴愬姛锛堥噸澶嶉獙璇侊級",
+  "data": {
+    "licenseCode": "SYXO-HK0U-PQ6P-71F8",
+    "validityDays": 30,
+    "expiresAt": "2025-08-04T16:00:58.646Z",
+    "isUsed": true,
+    "usedAt": "2025-07-05 16:01:06"
+  },
+  "online": true,
+  "verificationTime": "2025-07-05T17:03:22.639Z"
+}
+鉁?涓昏繘绋嬮獙璇佹垚鍔燂紝鍑嗗鏍囪鍜屼繚瀛?鉁?鎺堟潈鐮佸凡鏍囪涓轰娇鐢? SYXO-HK0U-PQ6P-71F8
+馃捑 姝ｅ湪淇濆瓨鎺堟潈淇℃伅鍒? C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃搳 鎺堟潈鏁版嵁: {
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  validityDays: 30,
+  expiresAt: '2025-08-04T16:00:58.646Z',
+  isUsed: true,
+  usedAt: '2025-07-05 16:01:06'
+}
+鉁?鎺堟潈淇℃伅淇濆瓨鎴愬姛
+鉁?鎺堟潈鏂囦欢纭瀛樺湪: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃摛 涓昏繘绋嬭繑鍥炴垚鍔熺粨鏋? {
+  "success": true,
+  "message": "鎺堟潈楠岃瘉鎴愬姛",
+  "data": {
+    "valid": true,
+    "message": "鍗″瘑楠岃瘉鎴愬姛锛堥噸澶嶉獙璇侊級",
+    "data": {
+      "licenseCode": "SYXO-HK0U-PQ6P-71F8",
+      "validityDays": 30,
+      "expiresAt": "2025-08-04T16:00:58.646Z",
+      "isUsed": true,
+      "usedAt": "2025-07-05 16:01:06"
+    },
+    "online": true,
+    "verificationTime": "2025-07-05T17:03:22.639Z"
+  }
+}
+馃帀 鏀跺埌鎺堟潈楠岃瘉鎴愬姛淇″彿
+馃敋 鍏抽棴鎺堟潈楠岃瘉绐楀彛
+馃殌 鍚姩涓诲簲鐢?..
+馃殌 寮€濮嬪惎鍔ㄤ富搴旂敤...
+馃幀 鏄剧ず鍚姩鐢婚潰
+馃毇 闅愯棌搴旂敤鑿滃崟
+馃攧 妫€鏌ュ簲鐢ㄦ洿鏂?Skip checkForUpdates because application is not packed and dev update config is not forced
+鉁?涓诲簲鐢ㄥ惎鍔ㄦ祦绋嬪畬鎴?checkForUpdatesAndNotify called, downloadPromise is null
+鈴?鍚姩鐢婚潰寤惰繜缁撴潫锛屽垱寤轰富绐楀彛
+馃彈锔?寮€濮嬪垱寤轰富绐楀彛...
+鉁?涓荤獥鍙ｅ垱寤烘垚鍔?馃敆 鍔犺浇鏈湴澶囩敤椤甸潰
+馃搫 鍔犺浇鏈湴澶囩敤椤甸潰
+馃攳 妫€鏌ユ湰鍦版巿鏉冪姸鎬?..
+馃搵 姝ｅ湪璇诲彇鏈湴鎺堟潈淇℃伅: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+鉁?鎴愬姛璇诲彇鏈湴鎺堟潈淇℃伅
+馃搳 鎺堟潈淇℃伅: {
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  type: '鏈煡',
+  expiryDate: '鏈煡',
+  savedAt: '鏈煡'
+}
+鈿狅笍 鎺堟潈淇℃伅涓嶅畬鏁达紝闇€瑕侀噸鏂伴獙璇?鉁?澶囩敤椤甸潰鍔犺浇鎴愬姛
+馃攧 鐢ㄦ埛璇锋眰閲嶈瘯涓荤綉绔欒繛鎺?馃寪 灏濊瘯鍔犺浇涓荤綉绔? http://openclash.aixiaobaozi.dpdns.org/
+馃摗 寮€濮嬪姞杞界綉绔?..
+鉁?缃戠珯鍔犺浇鎴愬姛
+馃帹 娉ㄥ叆鑷畾涔夋爣棰樻爮...
+鉁?鏍囬鏍忔敞鍏ュ畬鎴?馃敋 涓荤獥鍙ｅ凡鍏抽棴
+
+C:\Users\77066\OneDrive\Desktop\electron-app>npm start
+
+> leiyuchuanmei-config-manager@1.0.0 start
+> electron .
+
+
+馃搵 寮€濮嬪姞杞介厤缃拰妯″潡...
+鉁?UI閰嶇疆鍔犺浇鎴愬姛
+馃搳 鍦ㄧ嚎楠岃瘉鏃ュ織璁板綍鍣ㄥ垵濮嬪寲瀹屾垚
+馃搧 鏃ュ織鐩綍: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\logs\online-verification
+馃搫 褰撳墠鏃ュ織鏂囦欢: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\logs\online-verification\verification-2025-07-05.log 
+鉁?鎺堟潈绠＄悊鍣ㄦā鍧楀姞杞芥垚鍔?鉁?鏉冮檺绠＄悊鍣ㄦā鍧楀姞杞芥垚鍔?馃寪 缃戠珯URL: http://openclash.aixiaobaozi.dpdns.org/
+馃敡 鍒濆鍖栨巿鏉冩枃浠?..
+馃搧 鐢ㄦ埛鏁版嵁鐩綍: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager
+馃搫 鎺堟潈鏂囦欢璺緞: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+馃搫 浣跨敤璁板綍鏂囦欢璺緞: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\used-licenses.json
+馃搨 鎺堟潈鐮佷娇鐢ㄨ褰曟枃浠跺凡瀛樺湪: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\used-licenses.json
+鉁?鎺堟潈绠＄悊鍣ㄥ垵濮嬪寲鎴愬姛
+鉁?鏉冮檺绠＄悊鍣ㄥ垵濮嬪寲鎴愬姛
+馃攳 妫€鏌ユ湰鍦版巿鏉冪姸鎬?..
+馃搵 姝ｅ湪璇诲彇鏈湴鎺堟潈淇℃伅: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+鉁?鎴愬姛璇诲彇鏈湴鎺堟潈淇℃伅
+馃搳 鎺堟潈淇℃伅: {
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  type: '鏈煡',
+  expiryDate: '鏈煡',
+  savedAt: '鏈煡'
+}
+鈿狅笍 鎺堟潈淇℃伅涓嶅畬鏁达紝闇€瑕侀噸鏂伴獙璇?鉂?闇€瑕佹巿鏉冮獙璇? 鎺堟潈淇℃伅涓嶅畬鏁达紝璇烽噸鏂伴獙璇?馃攳 妫€鏌ユ湰鍦版巿鏉冪姸鎬?..
+馃搵 姝ｅ湪璇诲彇鏈湴鎺堟潈淇℃伅: C:\Users\77066\AppData\Roaming\leiyuchuanmei-config-manager\license.dat
+鉁?鎴愬姛璇诲彇鏈湴鎺堟潈淇℃伅
+馃搳 鎺堟潈淇℃伅: {
+  licenseCode: 'SYXO-HK0U-PQ6P-71F8',
+  type: '鏈煡',
+  expiryDate: '鏈煡',
+  savedAt: '鏈煡'
+}
+
+C:\Users\77066\OneDrive\Desktop\electron-app>
